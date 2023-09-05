@@ -58,12 +58,15 @@ namespace workspacer.Bar
 
         public void Initialize(IBarWidget[] left, IBarWidget[] right, IBarWidget[] center, IConfigContext context)
         {
-            _left = new BarSection(false, _leftPanel, left, _monitor, context,
+            _left = new BarSection(false, _leftPanel, left,false, _monitor, context,
                 _config.DefaultWidgetForeground, _config.DefaultWidgetBackground, _config.FontName, _config.FontSize, _config.BarMargin);
-            _right = new BarSection(true, _rightPanel, right, _monitor, context,
+            _right = new BarSection(true, _rightPanel, right,false, _monitor, context,
                 _config.DefaultWidgetForeground, _config.DefaultWidgetBackground, _config.FontName, _config.FontSize, _config.BarMargin);
-            _center = new BarSection(true, _centerPanel, center, _monitor, context,
+            _center = new BarSection(true, _centerPanel, center,true, _monitor, context,
                 _config.DefaultWidgetForeground, _config.DefaultWidgetBackground, _config.FontName, _config.FontSize, _config.BarMargin);
+
+
+
         }
 
         private System.Drawing.Color ColorToColor(Color color)
@@ -119,7 +122,7 @@ namespace workspacer.Bar
             // 
             // _centerPanel
             // 
-            _centerPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            _centerPanel.Anchor = AnchorSytles.None;
             _centerPanel.AutoSize = true;
             _centerPanel.Location = new Point((Screen.PrimaryScreen.Bounds.Width - _centerPanel.Size.Width) / 2, 0);
             _centerPanel.Margin = new Padding(0);

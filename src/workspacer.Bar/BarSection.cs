@@ -22,14 +22,15 @@ namespace workspacer.Bar
 
         private bool _reverse;
         private IBarWidgetContext _context;
-
+        private bool _widgetsCentered;
         private IDictionary<Label, Action> _clickedHandlers;
 
-        public BarSection(bool reverse, FlowLayoutPanel panel, IBarWidget[] widgets, IMonitor monitor, IConfigContext context,
+        public BarSection(bool reverse, FlowLayoutPanel panel, IBarWidget[] widgets,bool centered, IMonitor monitor, IConfigContext context,
             Color defaultFore, Color defaultBack, string fontName, int fontSize, int margin)
         {
             _panel = panel;
             _widgets = widgets;
+            _widgetsCentered = centered;
             _monitor = monitor;
             _configContext = context;
             _fontName = fontName;
@@ -44,14 +45,16 @@ namespace workspacer.Bar
             _context = new BarWidgetContext(this, _monitor, _configContext);
             while (_panel.Controls.Count != _widgets.Count())
             {
-                _panel.Controls.Add(CreateWidgetPanel(_margin));
+                _panel.Controls.Add(CreateWidgetPanel(_margin,_widgetsCentered));
             }
 
             InitializeWidgets(widgets, _context);
+
         }
 
         private FlowLayoutPanel CreateWidgetPanel(int margin)
         {
+
             return new FlowLayoutPanel
             {
                 AutoSize = true,
@@ -62,6 +65,38 @@ namespace workspacer.Bar
                 Size = new Size(50, 50),
                 WrapContents = false
             };
+        }
+
+        private FlowLayoutPanel CreateWidgetPanel(int margin,bool centered)
+        {
+            if (centered)
+            {
+                return new FlowLayoutPanel
+                {
+                    AutoSize = true,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                    BackColor = ColorToColor(_defaultBack),
+                    Location = new Point(0, 0),
+                    Margin =new Padding(margin),
+                    Size = new Size(50, 50),
+                    WrapContents = false
+                }; 
+            }
+            else
+            {
+            return new FlowLayoutPanel
+            {
+                AutoSize = true,
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom,
+                BackColor = ColorToColor(_defaultBack),
+                Location = new Point(0, 0),
+                Margin =new Padding(margin),
+                Size = new Size(50, 50),
+                WrapContents = false
+            };
+            }
+
+        
         }
 
         public void Draw()
